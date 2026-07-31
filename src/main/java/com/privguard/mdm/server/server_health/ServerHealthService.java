@@ -38,7 +38,7 @@ public class ServerHealthService {
             //do ping tests to determine the best one
 
             response.setPreferedServerId(5);
-            response.setTimestamp(LocalDateTime.now());
+            response.setTimestamp(LocalDateTime.now().toString());
             response.setAvailableServers(serversInfoService.getAvailableServers());
 
             response.setMessage("OK");

@@ -13,17 +13,17 @@ import java.util.List;
 public class ServerHealthResponse extends OperationResponse  {
 
     private Integer preferedServerId;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private List<ServerInfoResponse> availableServers;
 
     public Integer getPreferedServerId() { return preferedServerId; }
-    public LocalDateTime getTimestamp() { return timestamp; }
+    public String getTimestamp() { return timestamp; }
     public List<ServerInfoResponse> getAvailableServers() {
         return availableServers;
     }
 
     public void setPreferedServerId(Integer _preferedServerId) { this.preferedServerId = _preferedServerId; }
-    public void setTimestamp(LocalDateTime _timestamp) { this.timestamp = _timestamp; }
+    public void setTimestamp(String _timestamp) { this.timestamp = _timestamp; }
     public void setAvailableServers(List<ServerInfoResponse> availableServers) {
         this.availableServers = availableServers;
     }
