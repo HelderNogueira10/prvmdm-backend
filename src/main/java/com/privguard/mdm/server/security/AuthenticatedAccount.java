@@ -15,4 +15,5 @@ public class AuthenticatedAccount {
     public void setId(Long _id) { this.id = _id; }
     public void setUuid(String _uuid) { this.uuid = _uuid; }
     public void setType(AccountTypes _type) { this.type = _type; }
+
 }

@@ -23,25 +23,15 @@ public class UserAccountsService {
         this.exceptionsManager = _exceptionsManager;
     }
 
-    public UserAccountResponse createUserAccount(UserAccountRequest _request) {
+    public UserAccountResponse add(UserAccountRequest _request, AccountEntity _account) {
 
         UserAccountResponse response = new UserAccountResponse();
         response.setMessage("Account Creation Failed!");
 
         try {
 
-            //CREATE ACCOUNT
-            String accountUuid = UUID.randomUUID().toString();
-
-            AccountEntity account = new AccountEntity();
-            account.setType(AccountTypes.USER_ACCOUNT);
-            account.setUuid(accountUuid);
-            account.setStatus(AccountStatus.ENABLED);
-            RepositoriesManager.getInstance().getAccountsRepository().save(account);
-
-            //CREATE USER ACCOUNT
             UserAccountEntity userAccount = new UserAccountEntity();
-            userAccount.setAccountId(account);
+            userAccount.setAccountId(_account);
             userAccount.setName(_request.getName());
             userAccount.setEmail(_request.getEmail());
             userAccount.setUsername(_request.getUsername());
@@ -50,7 +40,7 @@ public class UserAccountsService {
             RepositoriesManager.getInstance().getUserAccountsRepository().save(userAccount);
 
             response.setMessage("OK");
-            response.setUserUuid(accountUuid);
+            response.setUserUuid(_account.getUuid());
         }
         catch(Exception _e) { throw new RuntimeException(exceptionsManager.onErrorException("User Account Creation Failed: ", _e.getMessage())); }
         

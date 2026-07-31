@@ -40,6 +40,7 @@ public class SecurityConfig {
                 "/api/provisioning/**",
                 "/api/auth/device_account",
                 "/api/auth/user_account",
+                "/api/auth/service_account",
                 "/api/apps/files/get/**",
                 "/api/users/create",
                 "/api/commands/add",

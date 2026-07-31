@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface DeviceAccountsRepository extends JpaRepository<DeviceAccountEntity, Long> {
 
+    Optional<DeviceAccountEntity> findByImei(String _imei);
     <Optional> DeviceAccountEntity findByAccount(AccountEntity _account);
     Optional<DeviceAccountEntity> findByAccount_Uuid(String uuid);
 

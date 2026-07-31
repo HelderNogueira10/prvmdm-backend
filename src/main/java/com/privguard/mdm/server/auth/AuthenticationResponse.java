@@ -16,7 +16,6 @@ public class AuthenticationResponse extends OperationResponse  {
     public String getAccountUuid() { return accountUuid; }
     public AuthenticationStatus getAuthenticationStatus() { return authenticationStatus; }
 
-
     public void setToken(String _token) { this.token = _token; }
     public void setExpiresAt(String _expiresAt) { this.expiresAt = _expiresAt; }
     public void setAccountUuid(String _accountUuid) { this.accountUuid = _accountUuid; }

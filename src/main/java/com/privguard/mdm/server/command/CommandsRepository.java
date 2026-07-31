@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
 
 public interface CommandsRepository extends JpaRepository<CommandEntity, Long> {
-    
+
+    List<CommandEntity> findAllByStatus(CommandStatus _status);
     <Optional> List<CommandEntity> findByDeviceIdAndStatus(DeviceAccountEntity _device, CommandStatus _status);
 }

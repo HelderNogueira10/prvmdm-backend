@@ -3,6 +3,7 @@ package com.privguard.mdm.server.enrollment;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import com.privguard.mdm.server.device_accounts.DeviceAccountResponse;
 import org.springframework.stereotype.Service;
 
 import com.privguard.mdm.server.account.AccountEntity;
@@ -95,13 +96,11 @@ public class EnrollmentService {
             dbToken.setStatus(TokenStatus.REVOKED);
             tokensRepository.save(dbToken);
 
-            AccountEntity account = accountsService.addAgent();
-            DeviceAccountRequest accountRequest = new DeviceAccountRequest();
+            DeviceAccountRequest deviceRequest = new DeviceAccountRequest();
+            deviceRequest.setImei(_request.getEmei());
+            deviceRequest.setSecret(agentSecret);
 
-            accountRequest.setSecret(agentSecret);
-            accountRequest.setAccount(account);
-            accountRequest.setImei(_request.getEmei());
-            DeviceAccountEntity deviceAccount = deviceAccountsService.add(accountRequest);
+            DeviceAccountEntity deviceAccount = deviceAccountsService.getByImei(accountsService.addDeviceAccount(deviceRequest).getImei());
 
             EnrollmentEntity enrollment = new EnrollmentEntity();
             enrollment.setStartEnrollDate(LocalDateTime.now());
@@ -110,7 +109,7 @@ public class EnrollmentService {
             mRepository.save(enrollment);
 
             response.setAgentSecret(agentSecret);
-            response.setAgentUuid(account.getUuid());
+            response.setAgentUuid(deviceAccount.getAccount().getUuid());
             response.setStatus(OperationStatus.SUCCESS);
             response.setMessage("Enrollment Token Has Benn Validated!");
         }

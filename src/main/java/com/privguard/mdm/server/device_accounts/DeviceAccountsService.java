@@ -2,6 +2,9 @@ package com.privguard.mdm.server.device_accounts;
 
 import java.time.LocalDateTime;
 
+import com.privguard.mdm.server.account.AccountEntity;
+import com.privguard.mdm.server.operations.OperationResponse;
+import com.privguard.mdm.server.operations.OperationStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +24,36 @@ public class DeviceAccountsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public DeviceAccountEntity add(DeviceAccountRequest _request) {
+    public DeviceAccountEntity getByImei(String _imei) {
 
-        DeviceAccountEntity deviceAccount = new DeviceAccountEntity();
-        deviceAccount.setAccount(_request.getAccount());
-        deviceAccount.setImei(_request.getImei());
-        deviceAccount.setLastSeen(LocalDateTime.now());
-        deviceAccount.setSecret(passwordEncoder.encode(_request.getSecret()));
-        mRepository.save(deviceAccount);
+        return mRepository.findByImei(_imei).orElse(null);
+    }
 
-        return deviceAccount;
+    public DeviceAccountResponse add(DeviceAccountRequest _request, AccountEntity _account) {
+
+        DeviceAccountResponse response = new DeviceAccountResponse();
+        response.setStatus(OperationStatus.FAILURE);
+
+        try {
+
+            DeviceAccountEntity deviceAccount = new DeviceAccountEntity();
+            deviceAccount.setAccount(_account);
+            deviceAccount.setImei(_request.getImei());
+            deviceAccount.setLastSeen(LocalDateTime.now());
+            deviceAccount.setSecret(passwordEncoder.encode(_request.getSecret()));
+            mRepository.save(deviceAccount);
+
+            response.setImei(_request.getImei());
+            response.setAccountUuid(_account.getUuid());
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage("device account created successfully.");
+        }
+        catch(Exception _e) {
+
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("adding device account exception: " + _e.getMessage());
+        }
+
+        return response;
     }
 }
