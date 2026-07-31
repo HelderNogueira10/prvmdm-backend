@@ -7,15 +7,18 @@ import com.privguard.mdm.server.account.AccountsService;
 import com.privguard.mdm.server.operations.OperationStatus;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import com.privguard.mdm.server.utils.StringsGenerator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceAccountService {
 
     private final ServiceAccountRepository serviceAccountRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ServiceAccountService(ServiceAccountRepository serviceAccountRepository) {
+    public ServiceAccountService(ServiceAccountRepository serviceAccountRepository, PasswordEncoder passwordEncoder) {
         this.serviceAccountRepository = serviceAccountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ServiceAccountResponse add(ServiceAccountRequest _req, AccountEntity _account) {
@@ -34,7 +37,7 @@ public class ServiceAccountService {
             serviceAccount.setName(_req.getName());
             serviceAccount.setStatus(ServiceAccountStatus.ENABLED);
             serviceAccount.setUsername(_req.getUsername());
-            serviceAccount.setSecret(accountSecret);
+            serviceAccount.setSecret(passwordEncoder.encode(accountSecret));
             serviceAccount.setAccount(_account);
             serviceAccountRepository.save(serviceAccount);
 
