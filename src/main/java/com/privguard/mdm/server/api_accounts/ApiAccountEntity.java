@@ -16,7 +16,7 @@ public class ApiAccountEntity extends BaseEntity {
     @NotNull private String key;
     @NotNull private LocalDateTime expireDate;
     @NotNull @Enumerated(EnumType.STRING) private ApiAccountStatus accountStatus;
-    @NotNull @OneToOne @JoinColumn(name="account_id") private AccountEntity account;
+    @NotNull @ManyToOne @JoinColumn(name="account_id") private AccountEntity account;
 
     public String getKey() {
         return key;
