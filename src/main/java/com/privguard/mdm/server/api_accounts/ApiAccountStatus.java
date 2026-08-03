@@ -4,5 +4,6 @@ public enum ApiAccountStatus {
     
     ENABLED,
     DISABLED,
-    EXPIRED
+    EXPIRED,
+    REVOKED
 }

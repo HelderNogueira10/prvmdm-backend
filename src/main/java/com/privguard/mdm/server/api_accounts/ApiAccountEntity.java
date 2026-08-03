@@ -2,13 +2,11 @@ package com.privguard.mdm.server.api_accounts;
 
 import java.time.LocalDateTime;
 
+import com.privguard.mdm.server.account.AccountEntity;
 import com.privguard.mdm.server.base.BaseEntity;
 import com.privguard.mdm.server.user_accounts.UserAccountEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -17,7 +15,8 @@ public class ApiAccountEntity extends BaseEntity {
     
     @NotNull private String key;
     @NotNull private LocalDateTime expireDate;
-    @NotNull @OneToOne @JoinColumn(name="user_id") private UserAccountEntity userId;
+    @NotNull @Enumerated(EnumType.STRING) private ApiAccountStatus accountStatus;
+    @NotNull @OneToOne @JoinColumn(name="account_id") private AccountEntity userId;
 
     public String getKey() {
         return key;
@@ -35,11 +34,19 @@ public class ApiAccountEntity extends BaseEntity {
         this.expireDate = expireDate;
     }
 
-    public UserAccountEntity getUserId() {
+    public AccountEntity getUserId() {
         return userId;
     }
 
-    public void setUserId(UserAccountEntity userId) {
+    public void setUserId(AccountEntity userId) {
         this.userId = userId;
+    }
+
+    public ApiAccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(ApiAccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }
