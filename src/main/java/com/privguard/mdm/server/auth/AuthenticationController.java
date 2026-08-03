@@ -37,4 +37,10 @@ public class AuthenticationController {
 
         return authenticationService.authenticate(_request);
     }
+
+    @PostMapping("/api_account")
+    public AuthenticationResponse authApiAccount(@Valid @RequestBody ApiAuthenticationRequest _request) {
+
+        return authenticationService.authenticate(_request);
+    }
 }

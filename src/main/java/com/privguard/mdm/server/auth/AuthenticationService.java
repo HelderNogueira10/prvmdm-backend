@@ -16,6 +16,7 @@ public class AuthenticationService {
     private final AccountTokenService tokensService;
     private final AccountTokensRepository accountTokensRepository;
 
+    private final ApiAuthenticationProvider apiAuthenticationProvider;
     private final UserAuthenticationProvider userAuthenticationProvider;
     private final DeviceAuthenticationProvider deviceAuthenticationProvider;
     private final ServiceAuthenticationProvider serviceAuthenticationProvider;
@@ -26,6 +27,7 @@ public class AuthenticationService {
             JwtService _jwtService,
             AccountTokenService _tokensService,
             AccountTokensRepository _accountTokensRepo,
+            ApiAuthenticationProvider _apiAuthenticationProvider,
             UserAuthenticationProvider _userAuthProvider,
             DeviceAuthenticationProvider _deviceAuthProvider, ServiceAccountService serviceAccountService,
             ServiceAuthenticationProvider _serviceAuthenticationProvider) {
@@ -33,6 +35,7 @@ public class AuthenticationService {
         this.jwtService = _jwtService;
         this.tokensService = _tokensService;
         this.accountTokensRepository = _accountTokensRepo;
+        this.apiAuthenticationProvider = _apiAuthenticationProvider;
         this.userAuthenticationProvider = _userAuthProvider;
         this.deviceAuthenticationProvider = _deviceAuthProvider;
         this.serviceAccountService = serviceAccountService;
@@ -55,6 +58,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(ServiceAuthenticationRequest _request) {
 
         AccountEntity account = serviceAuthenticationProvider.authenticate(_request);
+        return tokensService.issueToken(account);
+    }
+
+    public AuthenticationResponse authenticate(ApiAuthenticationRequest _request) {
+
+        AccountEntity account = apiAuthenticationProvider.authenticate(_request);
         return tokensService.issueToken(account);
     }
 }

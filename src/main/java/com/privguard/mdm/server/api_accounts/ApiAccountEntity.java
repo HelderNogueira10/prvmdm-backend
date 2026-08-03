@@ -16,7 +16,7 @@ public class ApiAccountEntity extends BaseEntity {
     @NotNull private String key;
     @NotNull private LocalDateTime expireDate;
     @NotNull @Enumerated(EnumType.STRING) private ApiAccountStatus accountStatus;
-    @NotNull @OneToOne @JoinColumn(name="account_id") private AccountEntity userId;
+    @NotNull @OneToOne @JoinColumn(name="account_id") private AccountEntity account;
 
     public String getKey() {
         return key;
@@ -34,19 +34,19 @@ public class ApiAccountEntity extends BaseEntity {
         this.expireDate = expireDate;
     }
 
-    public AccountEntity getUserId() {
-        return userId;
-    }
-
-    public void setUserId(AccountEntity userId) {
-        this.userId = userId;
-    }
-
     public ApiAccountStatus getAccountStatus() {
         return accountStatus;
     }
 
     public void setAccountStatus(ApiAccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public AccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
     }
 }
