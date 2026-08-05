@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/apps")
@@ -33,11 +34,37 @@ public class AppsController {
         this.appsService = appsService;
     }
 
+    @GetMapping("/delete/{_id}")
+    public OperationResponse delete(@PathVariable Integer _id, Authentication _auth) {
+
+        return appsService.delete(_id, (AuthenticatedAccount) _auth.getPrincipal());
+    }
+
     @PostMapping("/add")
     public OperationResponse add(@Valid @RequestBody AddAppRequest _request, Authentication _auth) {
 
         AuthenticatedAccount authedAccount = (AuthenticatedAccount) _auth.getPrincipal();
         return appsService.add(_request, authedAccount);
+    }
+
+    @GetMapping("/get/{_id}")
+    public GetAppResponse getApp(@PathVariable Integer _id, Authentication _auth) {
+
+        AuthenticatedAccount account = (AuthenticatedAccount) _auth.getPrincipal();
+        return appsService.getApp(_id, account);
+    }
+
+    @GetMapping("/get/all")
+    public GetAppsResponse getAllApps(Authentication _auth) {
+
+        return appsService.getAll((AuthenticatedAccount) _auth.getPrincipal());
+    }
+
+    @GetMapping("/statistics")
+    public AppStatisticsResponse getStatistics(Authentication _auth) {
+
+        AuthenticatedAccount authedAccount = (AuthenticatedAccount) _auth.getPrincipal();
+        return appsService.getStatistics(authedAccount);
     }
 
     @GetMapping("/files/get/{_package}/{version}/{filename}")

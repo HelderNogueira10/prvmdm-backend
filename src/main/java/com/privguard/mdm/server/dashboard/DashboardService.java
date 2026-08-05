@@ -1,5 +1,6 @@
 package com.privguard.mdm.server.dashboard;
 
+import com.privguard.mdm.server.apps.AppsService;
 import com.privguard.mdm.server.command.CommandStatus;
 import com.privguard.mdm.server.command.CommandsRepository;
 import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
@@ -17,10 +18,12 @@ public class DashboardService {
 
     private final DeviceAccountsRepository deviceAccountsRepository;
     private final CommandsRepository commandsRepository;
+    private final AppsService appsService;
 
-    public DashboardService(DeviceAccountsRepository deviceAccountsRepository, CommandsRepository commandsRepository) {
+    public DashboardService(DeviceAccountsRepository deviceAccountsRepository, CommandsRepository commandsRepository, AppsService appsService) {
         this.deviceAccountsRepository = deviceAccountsRepository;
         this.commandsRepository = commandsRepository;
+        this.appsService = appsService;
     }
 
     public DashboardResponse getMainStats() {
@@ -41,7 +44,7 @@ public class DashboardService {
 
             response.setOnlineDevices(onlineDevices);
             response.setOfflineDevices(devices.size() - onlineDevices);
-            response.setApplications(45);
+            response.setApplications(appsService.getTotalApplications());
             response.setPendingCommands(commandsRepository.findAllByStatus(CommandStatus.PENDING).size());
 
             response.setStatus(OperationStatus.SUCCESS);

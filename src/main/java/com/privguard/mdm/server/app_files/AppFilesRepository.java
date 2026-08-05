@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface AppFilesRepository extends JpaRepository<AppFileEntity, Long> {
 
     List<AppFileEntity> findAllByAppVersion(AppVersionEntity _appVersion);
+    void deleteByAppVersion(AppVersionEntity _appVersion);
 }

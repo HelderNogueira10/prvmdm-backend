@@ -12,6 +12,8 @@ public class AppEntity extends BaseEntity {
     @NotNull private String name;
     @NotNull private String packageName;
     @NotNull private String description;
+    private Integer installsCount;
+    private Integer uninstallsCount;
 
     public String getName() { return name; }
     public String getPackageName() { return packageName; }
@@ -20,4 +22,20 @@ public class AppEntity extends BaseEntity {
     public void setName(String _name) { this.name = _name; }
     public void setPackageName(String _packageName) { this.packageName = _packageName; }
     public void setDescription(String _description) { this.description = _description; }
+
+    public Integer getInstallsCount() {
+        return installsCount;
+    }
+
+    public void setInstallsCount(Integer installsCount) {
+        this.installsCount = installsCount;
+    }
+
+    public Integer getUninstallsCount() {
+        return uninstallsCount;
+    }
+
+    public void setUninstallsCount(Integer uninstallsCount) {
+        this.uninstallsCount = uninstallsCount;
+    }
 }
