@@ -4,6 +4,7 @@ import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.hibernate.query.Page;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +35,16 @@ public class AppsController {
         this.appsService = appsService;
     }
 
-    @GetMapping("/delete/{_id}")
-    public OperationResponse delete(@PathVariable Integer _id, Authentication _auth) {
+    @PostMapping("/edit")
+    public OperationResponse editApp(@Valid @RequestBody EditAppRequest _req, Authentication _auth) {
 
-        return appsService.delete(_id, (AuthenticatedAccount) _auth.getPrincipal());
+        return appsService.editApp(_req, (AuthenticatedAccount) _auth.getPrincipal());
+    }
+
+    @DeleteMapping("/delete")
+    public OperationResponse delete(@RequestParam Integer id, Authentication _auth) {
+
+        return appsService.delete(id, (AuthenticatedAccount) _auth.getPrincipal());
     }
 
     @PostMapping("/add")
@@ -47,12 +54,25 @@ public class AppsController {
         return appsService.add(_request, authedAccount);
     }
 
-    @GetMapping("/get/{_id}")
-    public GetAppResponse getApp(@PathVariable Integer _id, Authentication _auth) {
+    @GetMapping("/get")
+    public GetApplicationResponse getApp(@RequestParam Integer id, Authentication _auth) {
 
         AuthenticatedAccount account = (AuthenticatedAccount) _auth.getPrincipal();
-        return appsService.getApp(_id, account);
+        return appsService.getApp(id.longValue(), account);
     }
+
+    @GetMapping("/fetch/all")
+    public FetchAllBasicApplicationResponse fetchAllAppsBasic(Authentication _auth) {
+
+        return appsService.fetchAll((AuthenticatedAccount) _auth.getPrincipal());
+    }
+
+    @GetMapping("/paged")
+    public GetPaginatedAppsResponse getPaged(@RequestParam Integer pageId, @RequestParam Integer count, Authentication _auth) {
+
+        return appsService.getPaged(pageId, count, (AuthenticatedAccount) _auth.getPrincipal());
+    }
+
 
     @GetMapping("/get/all")
     public GetAppsResponse getAllApps(Authentication _auth) {

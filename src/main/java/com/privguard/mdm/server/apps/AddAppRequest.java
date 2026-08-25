@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotNull;
 public class AddAppRequest {
 
     @NotNull private String name;
-    @NotNull private String description;
+     private String appDescription;
     @NotNull private String packageName;
+    private String iconUrl;
 
     public String getName() {
         return name;
@@ -16,12 +17,12 @@ public class AddAppRequest {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAppDescription() {
+        return appDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAppDescription(String appDescription) {
+        this.appDescription = appDescription;
     }
 
     public String getPackageName() {
@@ -30,5 +31,13 @@ public class AddAppRequest {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

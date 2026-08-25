@@ -12,6 +12,7 @@ public class GetAppResponse extends OperationResponse {
     private String name;
     private String description;
     private String packageName;
+    private String iconUrl;
     private LocalDateTime createdAt;
 
     private Long totalAppSize;
@@ -107,5 +108,13 @@ public class GetAppResponse extends OperationResponse {
 
     public void setTotalAppSize(Long totalAppSize) {
         this.totalAppSize = totalAppSize;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

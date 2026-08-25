@@ -1,5 +1,7 @@
 package com.privguard.mdm.server.provisioning;
 
+import com.privguard.mdm.server.security.AuthenticatedAccount;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,12 @@ public class ProvisioningController {
         this.provisioningService = provisioningService;
         this.qrCodeService = qrCodeService;
         this.objectMapper = new ObjectMapper();
+    }
+
+    @GetMapping("/get/all")
+    public GetProvisioningSchemasResponse fetchSchemas(Authentication _auth) {
+
+        return provisioningService.fetchSchemas((AuthenticatedAccount) _auth.getPrincipal());
     }
 
     @GetMapping("/{_name}/json")

@@ -1,4 +1,4 @@
-package com.privguard.mdm.server.account_permissions;
+package com.privguard.mdm.server.accounts.account_permissions;
 
 import com.privguard.mdm.server.base.BaseEntity;
 import jakarta.persistence.Entity;

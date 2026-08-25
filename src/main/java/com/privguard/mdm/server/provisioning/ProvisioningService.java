@@ -1,7 +1,10 @@
 package com.privguard.mdm.server.provisioning;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.stereotype.Service;
 
 import com.privguard.mdm.server.exceptions.ExceptionsManager;
@@ -25,6 +28,52 @@ public class ProvisioningService {
         this.mRepository = _mRepository;
         this.servicesManager = servicesManager;
         this.tokensRepository = _tokensRepository;
+    }
+
+    public GetProvisioningSchemasResponse fetchSchemas(AuthenticatedAccount _account) {
+
+        GetProvisioningSchemasResponse response = new GetProvisioningSchemasResponse();
+
+        try {
+
+            //check permissions
+            List<ProvisioningEntity> schemas = mRepository.findAll();
+            List<GetProvisioningSchemaResponse> responsesList = new ArrayList<>();
+
+            for(ProvisioningEntity prov : schemas) {
+
+                GetProvisioningSchemaResponse provResponse = new GetProvisioningSchemaResponse();
+                provResponse.setId(prov.getId());
+                provResponse.setLocale(prov.getLocale());
+                provResponse.setTimezone(prov.getTimezone());
+                provResponse.setWifiSSID(prov.getWifiSSID());
+                provResponse.setSchemaName(prov.getSchemaName());
+                provResponse.setEncrypted(prov.isEncryptDevice());
+                provResponse.setWifiSecurity(prov.getWifiSecurity());
+                provResponse.setComponentName(prov.getComponentName());
+                provResponse.setDownloadUri(prov.getDownloadLocation());
+                provResponse.setCraetedAt(prov.getCreatedAt().toString());
+                provResponse.setUpdatedAt(prov.getUpdatedAt().toString());
+                provResponse.setOrganizationName(prov.getOrganizationName());
+                provResponse.setSystemAppsInstalled(prov.isLeaveSystemApps());
+
+                responsesList.add(provResponse);
+            }
+
+            response.setSchemas(responsesList);
+            response.setCount(schemas.stream().count());
+
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage("OK");
+        }
+        catch (Exception _e) {
+
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("ProvisiningService->fetchSchemas: " + _e.getMessage());
+            _e.printStackTrace();
+        }
+
+        return response;
     }
 
     public ProvisioningResponse getEnrollment(String _name) {

@@ -2,8 +2,12 @@ package com.privguard.mdm.server.enrollment;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import com.privguard.mdm.server.device_accounts.DeviceAccountResponse;
+import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.stereotype.Service;
 
 import com.privguard.mdm.server.account.AccountEntity;
@@ -45,6 +49,46 @@ public class EnrollmentService {
         
         this.accountsService = _accountsService;
         this.deviceAccountsService = _deviceAccountsService;
+    }
+
+    public GetEnrollmentsGLPIResponse getAllEnrollments(AuthenticatedAccount _account) {
+
+        GetEnrollmentsGLPIResponse response = new GetEnrollmentsGLPIResponse();
+
+        try {
+
+            //chekc perms
+            List<EnrollmentEntity> dbEnrollments = mRepository.findAll();
+            List<GetEnrollmentGLPIResponse> enrollmentsList = new ArrayList<>();
+
+            for(EnrollmentEntity dbEnrollment : dbEnrollments) {
+
+                String startDate = dbEnrollment.getStartEnrollDate() == null ? "NA" : dbEnrollment.getStartEnrollDate().toString();
+                String endDate = dbEnrollment.getEndEnrollDate() == null ? "NA" : dbEnrollment.getEndEnrollDate().toString();
+
+                GetEnrollmentGLPIResponse enrollmentResponse = new GetEnrollmentGLPIResponse();
+                enrollmentResponse.setEnrollmentStatus(dbEnrollment.getStatus().toString());
+                enrollmentResponse.setHostname(dbEnrollment.getDevice().getAccount().getUuid());
+                enrollmentResponse.setFinishedAt(endDate);
+                enrollmentResponse.setStartedAt(startDate);
+                enrollmentResponse.setStatus(dbEnrollment.getDevice().getAccount().getStatus().toString());
+                enrollmentResponse.setSchemaUsed("NA"); //TODO: enrollments must have schema used field
+                enrollmentResponse.setTokenId(Long.valueOf(0)); //TODO: enrollments must keep track of token used to enroll
+                enrollmentsList.add(enrollmentResponse);
+            }
+
+            response.setEnrollments(enrollmentsList);
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage("OK");
+        }
+        catch (Exception _e) {
+
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("EnrollmentService->getAllEnrollments: " + _e.getMessage());
+            _e.printStackTrace();
+        }
+
+        return response;
     }
 
     public OperationResponse confirmEnrollment(EnrollmentRequest _request) {

@@ -4,10 +4,7 @@ import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/apps/versions")
@@ -25,4 +22,12 @@ public class AppVersionsController {
         AuthenticatedAccount account = (AuthenticatedAccount) _auth.getPrincipal();
         return appVersionsService.add(_request, account);
     }
+
+    @GetMapping("/delete/{_versionId}")
+    public OperationResponse delete(@PathVariable Integer _versionId, Authentication _auth) {
+
+        return appVersionsService.delete(_versionId, (AuthenticatedAccount) _auth.getPrincipal());
+    }
+
+    
 }

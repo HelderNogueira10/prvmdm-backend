@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name="accounts")
 public class AccountEntity extends BaseEntity {
  
+    @Column(nullable = false) private String name;
     @Column(nullable = false, unique = true) private String uuid;
     @NotNull @Enumerated(EnumType.STRING) private AccountTypes type;
     @NotNull @Enumerated(EnumType.STRING) private AccountStatus status;
@@ -37,5 +38,12 @@ public class AccountEntity extends BaseEntity {
         this.uuid = uuid;
     }
 
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -1,8 +1,9 @@
 package com.privguard.mdm.server.app_versions;
 
+import com.privguard.mdm.server.operations.OperationResponse;
 import jakarta.validation.constraints.NotNull;
 
-public class AddAppVersionRequest {
+public class AddAppVersionRequest  {
 
     @NotNull private String versionCode;
     @NotNull private String versionName;

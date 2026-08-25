@@ -1,8 +1,7 @@
 package com.privguard.mdm.server.security;
 
-import com.privguard.mdm.server.account.AccountEntity;
 import com.privguard.mdm.server.account.AccountTypes;
-import com.privguard.mdm.server.account_tokens.TokenGenerationRequest;
+import com.privguard.mdm.server.account.account_tokens.TokenGenerationRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -12,11 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 @Service
 public class JwtService {

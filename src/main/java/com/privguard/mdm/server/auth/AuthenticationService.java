@@ -1,9 +1,9 @@
 package com.privguard.mdm.server.auth;
 
 import com.privguard.mdm.server.account.AccountEntity;
-import com.privguard.mdm.server.account_tokens.AccountTokensRepository;
+import com.privguard.mdm.server.account.account_tokens.AccountTokensRepository;
 import com.privguard.mdm.server.security.JwtService;
-import com.privguard.mdm.server.account_tokens.AccountTokenService;
+import com.privguard.mdm.server.account.account_tokens.AccountTokenService;
 import com.privguard.mdm.server.service_accounts.ServiceAccountService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

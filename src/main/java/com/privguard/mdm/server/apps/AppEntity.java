@@ -1,6 +1,7 @@
 package com.privguard.mdm.server.apps;
 
 import com.privguard.mdm.server.base.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -11,9 +12,10 @@ public class AppEntity extends BaseEntity {
 
     @NotNull private String name;
     @NotNull private String packageName;
-    @NotNull private String description;
-    private Integer installsCount;
-    private Integer uninstallsCount;
+     private String description;
+    @Column(nullable = false) private Integer installsCount = 0;
+    @Column(nullable = false) private Integer uninstallsCount = 0;
+    private String iconUrl;
 
     public String getName() { return name; }
     public String getPackageName() { return packageName; }
@@ -37,5 +39,13 @@ public class AppEntity extends BaseEntity {
 
     public void setUninstallsCount(Integer uninstallsCount) {
         this.uninstallsCount = uninstallsCount;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

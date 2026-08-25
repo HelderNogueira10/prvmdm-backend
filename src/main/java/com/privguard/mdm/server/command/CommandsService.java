@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.privguard.mdm.server.account.AccountsRepository;
+import com.privguard.mdm.server.apps.AppEntity;
+import com.privguard.mdm.server.apps.FetchBasicApplicationResponse;
 import com.privguard.mdm.server.device_accounts.DeviceAccountsService;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
+import com.privguard.mdm.server.user_accounts.UserAccountRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.privguard.mdm.server.account.AccountEntity;
@@ -22,12 +26,16 @@ public class CommandsService {
     //private DeviceRepositor
     private DeviceAccountsService deviceAccountsService;
     private CommandsRepository mRepository;
+    private UserAccountRepository userAccountRepo;
     private DeviceAccountsRepository deviceAccountsRepository;
 
     public CommandsService(CommandsRepository _repo, DeviceAccountsService _agentsService,
-                           DeviceAccountsRepository _deviceAccountsRepository, AccountsRepository accountsRepository) {
+                           DeviceAccountsRepository _deviceAccountsRepository,
+                           AccountsRepository accountsRepository,
+                           UserAccountRepository userAccountRepo) {
 
         this.mRepository = _repo;
+        this.userAccountRepo = userAccountRepo;
         this.deviceAccountsService = _agentsService;
         this.deviceAccountsRepository = _deviceAccountsRepository;
         this.accountsRepository = accountsRepository;
@@ -53,6 +61,54 @@ public class CommandsService {
         System.out.println("COMMANDS RESPONSE: " + commandsResponse.size() );
         return commandsResponse;
     }
+
+    public GetPagedCommandsResponse getPagedCommands(int page, int limit, AuthenticatedAccount _account) {
+
+        GetPagedCommandsResponse response = new GetPagedCommandsResponse();
+
+        try {
+
+            //check perms
+            int pageNumber = Math.max(page - 1, 0);
+            List<GetCommandResponse> responses = new ArrayList<>();
+            List<CommandEntity> dbCommands = mRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(pageNumber, limit));
+
+            response.setPageSize(pageNumber);
+            for(CommandEntity command : dbCommands) {
+
+                GetCommandResponse commandResponse = new GetCommandResponse();
+                commandResponse.setId(command.getId());
+                commandResponse.setType(command.getType());
+                commandResponse.setStatus(command.getStatus());
+                commandResponse.setPayload(command.getPayload());
+                commandResponse.setTargetName(command.getDeviceId().getHostname());
+                commandResponse.setCreatedAt(command.getCreatedAt().toString());
+                commandResponse.setEndedAt(String.valueOf(command.getEndedAt()));
+                commandResponse.setRequesterName(command.getAccountId().getName());
+
+                responses.add(commandResponse);
+            }
+
+            response.setCommands(responses);
+            response.setPageSize(pageNumber);
+
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage("OK");
+        }
+        catch (Exception _e) {
+
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("CommandsService->getPagedCommands: " + _e.getMessage());
+        }
+
+        return response;
+    }
+
+    public Long getCommandsCount() { return mRepository.count(); }
+    public Long getFailedCommandsCount() { return mRepository.countByStatus(CommandStatus.FAILED); }
+    public Long getRunningCommandsCount() { return mRepository.countByStatus(CommandStatus.RUNNING); }
+    public Long getPendingCommandsCount() { return mRepository.countByStatus(CommandStatus.PENDING); }
+    public Long getSuccessfullCommandsCount() { return mRepository.countByStatus(CommandStatus.SUCCESS); }
 
     public OperationResponse updateCommand(CommandUpdateRequest _request, AuthenticatedAccount _account) {
 

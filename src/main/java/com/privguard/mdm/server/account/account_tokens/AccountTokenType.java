@@ -1,4 +1,4 @@
-package com.privguard.mdm.server.account_tokens;
+package com.privguard.mdm.server.account.account_tokens;
 
 public enum AccountTokenType {
 

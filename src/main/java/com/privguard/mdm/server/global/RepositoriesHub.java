@@ -1,7 +1,7 @@
 package com.privguard.mdm.server.global;
 
 import com.privguard.mdm.server.account.AccountsRepository;
-import com.privguard.mdm.server.account_tokens.AccountTokensRepository;
+import com.privguard.mdm.server.account.account_tokens.AccountTokensRepository;
 import com.privguard.mdm.server.api_errors.ApiErrorsRepository;
 import com.privguard.mdm.server.command.CommandsRepository;
 import com.privguard.mdm.server.device_accounts.DeviceAccountsRepository;

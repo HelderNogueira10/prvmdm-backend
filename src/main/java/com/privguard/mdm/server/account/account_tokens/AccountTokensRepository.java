@@ -1,7 +1,6 @@
-package com.privguard.mdm.server.account_tokens;
+package com.privguard.mdm.server.account.account_tokens;
 
 import com.privguard.mdm.server.account.AccountEntity;
-import com.privguard.mdm.server.tokens.TokenEntity;
 import com.privguard.mdm.server.tokens.TokenStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 

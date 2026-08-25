@@ -17,6 +17,7 @@ public class DeviceAccountEntity extends BaseEntity {
     
     @Column(nullable = false) private String imei;
     @Column(nullable = false) private String secret;
+	@Column(nullable = false) private String hostname;
     @Column(nullable = false) LocalDateTime lastSeen;
     @OneToOne @JoinColumn(name = "account_id") private AccountEntity account;
 
@@ -44,4 +45,12 @@ public class DeviceAccountEntity extends BaseEntity {
 	public void setAccount(AccountEntity account) {
 		this.account = account;
 	}
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
 }

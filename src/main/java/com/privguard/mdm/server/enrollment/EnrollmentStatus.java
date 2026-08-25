@@ -4,5 +4,6 @@ public enum EnrollmentStatus {
     
     ENROLLED,
     PENDING,
-    RETIRED
+    RETIRED,
+    FAILED
 }

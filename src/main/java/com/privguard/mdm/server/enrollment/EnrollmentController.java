@@ -1,9 +1,8 @@
 package com.privguard.mdm.server.enrollment;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.privguard.mdm.server.security.AuthenticatedAccount;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import com.privguard.mdm.server.operations.OperationResponse;
 
@@ -30,5 +29,11 @@ public class EnrollmentController {
     public OperationResponse confirmEnrollment(@Valid @RequestBody EnrollmentRequest _request) {
 
         return mService.confirmEnrollment(_request);
+    }
+
+    @GetMapping("/get/all")
+    public GetEnrollmentsGLPIResponse getAllEnrollments(Authentication _auth) {
+
+        return mService.getAllEnrollments((AuthenticatedAccount) _auth.getPrincipal());
     }
 }

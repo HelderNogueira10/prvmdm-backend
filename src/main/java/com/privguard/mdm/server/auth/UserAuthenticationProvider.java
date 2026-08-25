@@ -1,6 +1,7 @@
 package com.privguard.mdm.server.auth;
 
 import com.privguard.mdm.server.account.AccountEntity;
+import com.privguard.mdm.server.exceptions.AuthenticationFailure;
 import com.privguard.mdm.server.exceptions.InvalidCredentialsException;
 import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.operations.OperationStatus;
@@ -28,13 +29,11 @@ public class UserAuthenticationProvider implements IUserAuthenticationProvider {
 
         try {
 
-            //check if user exists
             UserAccountEntity userAccount = userAccountsRepo.findByUsername(_request.getUsername())
-                    .orElseThrow(InvalidCredentialsException::new);
+                    .orElseThrow(AuthenticationFailure::new);
 
-            //check if password is correct
             if(!passwordEncoder.matches(_request.getPassword(), userAccount.getPassword()))
-                throw new InvalidCredentialsException();
+                throw new AuthenticationFailure();
 
             return userAccount.getAccountId();
         }

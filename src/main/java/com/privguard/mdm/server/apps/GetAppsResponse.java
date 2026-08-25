@@ -9,7 +9,7 @@ public class GetAppsResponse extends OperationResponse {
 
     private Integer appsCount;
     private LocalDateTime timestamp;
-    private List<GetAppResponse> appsResponse;
+    private List<GetApplicationResponse> appsResponse;
 
     public Integer getAppsCount() {
         return appsCount;
@@ -27,11 +27,11 @@ public class GetAppsResponse extends OperationResponse {
         this.timestamp = timestamp;
     }
 
-    public List<GetAppResponse> getAppsResponse() {
+    public List<GetApplicationResponse> getAppsResponse() {
         return appsResponse;
     }
 
-    public void setAppsResponse(List<GetAppResponse> appsResponse) {
+    public void setAppsResponse(List<GetApplicationResponse> appsResponse) {
         this.appsResponse = appsResponse;
     }
 }

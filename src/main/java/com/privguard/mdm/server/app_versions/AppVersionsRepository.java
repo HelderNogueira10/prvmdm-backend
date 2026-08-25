@@ -10,8 +10,9 @@ public interface AppVersionsRepository extends JpaRepository<AppVersionEntity, L
 
     Optional<AppVersionEntity> findByVersionCodeAndApp(String _versionCode, AppEntity _app);
 
-    AppVersionEntity app(AppEntity app);
+    AppVersionEntity findByApp(AppEntity app);
     List<AppVersionEntity> findAllByApp(AppEntity _app);
+    List<AppVersionEntity> findAllByAppOrderByCreatedAtDesc(AppEntity _app);
 
     void deleteAllByApp(AppEntity _app);
 }

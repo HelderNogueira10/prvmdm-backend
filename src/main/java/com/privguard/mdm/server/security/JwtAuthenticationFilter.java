@@ -1,6 +1,6 @@
 package com.privguard.mdm.server.security;
 
-import com.privguard.mdm.server.account_tokens.AccountTokenService;
+import com.privguard.mdm.server.account.account_tokens.AccountTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String authorization = request.getHeader("Authorization");
+        System.out.println("authorization: " + authorization);
         if(authorization == null || !authorization.startsWith("Bearer ") || authorization.length() < 30) {
 
             System.out.println("No bearer token");
@@ -48,9 +49,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
             String jwt = authorization.substring(7);
+            System.out.println("token received: " + jwt);
             String jti = jwtService.getJti(jwt);
+            System.out.println("jti recevied");
 
             AuthenticatedAccount principal = tokenService.validateToken(jti);
+            System.out.print("setted principal");
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     principal,
                     null,
@@ -65,6 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        System.out.println("filter cotionue");
         filterChain.doFilter(request, response);
     }
 }

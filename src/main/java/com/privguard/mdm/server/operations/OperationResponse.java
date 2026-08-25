@@ -9,6 +9,12 @@ public class OperationResponse {
     @NotNull private String message;
     @NotNull @Enumerated(EnumType.STRING) private OperationStatus status;
 
+    public OperationResponse() {
+        
+        this.setStatus(OperationStatus.FAILURE);
+        this.setMessage("Initialization Exception");
+    }
+
     public String getMessage() {
         return message;
     }

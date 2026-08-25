@@ -1,10 +1,13 @@
 package com.privguard.mdm.server.device_accounts;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.privguard.mdm.server.account.AccountEntity;
 import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.operations.OperationStatus;
+import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,36 @@ public class DeviceAccountsService {
     public DeviceAccountEntity getByImei(String _imei) {
 
         return mRepository.findByImei(_imei).orElse(null);
+    }
+
+    public GetHostnamesResponse getHostnames(AuthenticatedAccount _account) {
+
+        GetHostnamesResponse response = new GetHostnamesResponse();
+
+        try {
+
+            //TODO: check permissions
+            response.setUuids(new ArrayList<>());
+            response.setHostnames(new ArrayList<>());
+
+            List<DeviceAccountEntity> dbDevices = mRepository.findAll();
+            for(DeviceAccountEntity device : dbDevices) {
+
+                response.getHostnames().add(device.getHostname());
+                response.getUuids().add(device.getAccount().getUuid());
+            }
+
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage("OK");
+        }
+        catch(Exception _e) {
+
+            _e.printStackTrace();
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("DeviceAccountsService->getHostnames: " + _e.getMessage());
+        }
+
+        return response;
     }
 
     public DeviceAccountResponse add(DeviceAccountRequest _request, AccountEntity _account) {

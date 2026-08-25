@@ -6,10 +6,8 @@ import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/apps/files")
@@ -35,5 +33,17 @@ public class AppFilesController {
 
         AuthenticatedAccount account = (AuthenticatedAccount) _auth.getPrincipal();
         return appsService.getAppFiles(_request, account);
+    }
+
+    @PostMapping("/upload")
+    public OperationResponse upload(@RequestParam("versionId") Integer _versionId, @RequestParam("file")MultipartFile _file, Authentication _auth) {
+
+        return appFilesService.upload(_versionId, _file, (AuthenticatedAccount) _auth.getPrincipal());
+    }
+
+    @DeleteMapping("/delete/{_id}")
+    public OperationResponse delete(@PathVariable Integer _id, Authentication _auth) {
+
+        return appFilesService.delete(_id.longValue(), (AuthenticatedAccount) _auth.getPrincipal());
     }
 }
