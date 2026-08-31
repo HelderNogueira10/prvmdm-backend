@@ -2,12 +2,7 @@ package com.privguard.mdm.server.provisioning;
 
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.privguard.mdm.server.global.services.QRCodeService;
@@ -38,17 +33,17 @@ public class ProvisioningController {
         return provisioningService.fetchSchemas((AuthenticatedAccount) _auth.getPrincipal());
     }
 
-    @GetMapping("/{_name}/json")
-    public ProvisioningResponse getEnrollment(@PathVariable String _name) {
-        return provisioningService.getEnrollment(_name);
+    @GetMapping("/json")
+    public ProvisioningResponse getEnrollment(@RequestParam Long schema, @RequestParam String hostname) {
+        return provisioningService.getEnrollment(schema, hostname);
     }
 
     @GetMapping(
-        value="/{_name}/qr",
+        value="/qr",
         produces = org.springframework.http.MediaType.IMAGE_PNG_VALUE)
-    public byte[] qr(@PathVariable String _name) throws Exception {
+    public byte[] qr(@RequestParam Long schema, @RequestParam String hostname) throws Exception {
 
-        ProvisioningResponse response = provisioningService.getEnrollment(_name);
+        ProvisioningResponse response = provisioningService.getEnrollment(schema, hostname);
         String json = objectMapper.writeValueAsString(response);
         return qrCodeService.generateQRCode(json);
     }

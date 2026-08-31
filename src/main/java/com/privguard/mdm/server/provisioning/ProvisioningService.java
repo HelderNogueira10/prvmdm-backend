@@ -76,7 +76,7 @@ public class ProvisioningService {
         return response;
     }
 
-    public ProvisioningResponse getEnrollment(String _name) {
+    public ProvisioningResponse getEnrollment(Long schema, String hostname) {
 
         try {
             
@@ -89,13 +89,14 @@ public class ProvisioningService {
             token.setToken(enrollmentToken);
             tokensRepository.save(token);
 
-            ProvisioningEntity entity = mRepository.findBySchemaName(_name);
+            ProvisioningEntity entity = mRepository.findById(schema).orElseThrow(() -> new RuntimeException("scehma not found...."));
             if(entity == null)
                 return null;
 
             ProvisioningExtrasResponse extras = new ProvisioningExtrasResponse();
             extras.setTokenId(String.valueOf(token.getId()));
             extras.setEnrollmentToken(token.getToken());
+            extras.setHostname(hostname);
 
             ProvisioningResponse response = new ProvisioningResponse();
             response.setExtras(extras);

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.privguard.mdm.server.account.AccountEntity;
 import com.privguard.mdm.server.base.BaseEntity;
+import com.privguard.mdm.server.command_types.CommandTypeEntity;
 import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
 
 import jakarta.persistence.*;
@@ -16,8 +17,8 @@ public class CommandEntity extends BaseEntity {
     private String payload;
     private LocalDateTime endedAt;
     private LocalDateTime startedAt;
-    @NotNull @Enumerated(EnumType.STRING) private CommandType type;
     @NotNull @Enumerated(EnumType.STRING) private CommandStatus status;
+    @NotNull @ManyToOne @JoinColumn(name = "command_type_id") private CommandTypeEntity type;
     @NotNull @ManyToOne @JoinColumn(name="target_id") private DeviceAccountEntity deviceId;
     @NotNull @ManyToOne @JoinColumn(name="requester_id") private AccountEntity accountId;
 
@@ -45,11 +46,11 @@ public class CommandEntity extends BaseEntity {
         this.startedAt = startedAt;
     }
 
-    public CommandType getType() {
+    public CommandTypeEntity getType() {
         return type;
     }
 
-    public void setType(CommandType type) {
+    public void setType(CommandTypeEntity type) {
         this.type = type;
     }
 

@@ -32,6 +32,26 @@ public class DeviceAccountsService {
         return mRepository.findByImei(_imei).orElse(null);
     }
 
+    public OperationResponse validHostname(String _hostname, AuthenticatedAccount _account) {
+
+        OperationResponse response = new OperationResponse();
+
+        try {
+
+            //TODO: check permissions
+            response.setStatus(OperationStatus.SUCCESS);
+            response.setMessage(mRepository.existsByHostname(_hostname) ? "0" : "1");
+        }
+        catch (Exception _e) {
+
+            _e.printStackTrace();
+            response.setStatus(OperationStatus.FAILURE);
+            response.setMessage("DeviceAccountsService->validHostname: " + _e.getMessage());
+        }
+
+        return response;
+    }
+
     public GetHostnamesResponse getHostnames(AuthenticatedAccount _account) {
 
         GetHostnamesResponse response = new GetHostnamesResponse();
@@ -39,14 +59,14 @@ public class DeviceAccountsService {
         try {
 
             //TODO: check permissions
-            response.setUuids(new ArrayList<>());
+            response.setIds(new ArrayList<>());
             response.setHostnames(new ArrayList<>());
 
             List<DeviceAccountEntity> dbDevices = mRepository.findAll();
             for(DeviceAccountEntity device : dbDevices) {
 
                 response.getHostnames().add(device.getHostname());
-                response.getUuids().add(device.getAccount().getUuid());
+                response.getIds().add(device.getAccount().getId());
             }
 
             response.setStatus(OperationStatus.SUCCESS);
@@ -73,6 +93,7 @@ public class DeviceAccountsService {
             deviceAccount.setAccount(_account);
             deviceAccount.setImei(_request.getImei());
             deviceAccount.setLastSeen(LocalDateTime.now());
+            deviceAccount.setHostname(_request.getHostname());
             deviceAccount.setSecret(passwordEncoder.encode(_request.getSecret()));
             mRepository.save(deviceAccount);
 

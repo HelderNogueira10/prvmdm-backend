@@ -8,6 +8,7 @@ public class DeviceAccountRequest {
     
     @NotNull private String imei;
     @NotNull private String secret;
+    @NotNull private String hostname;
 
 
 	public String getImei() {
@@ -23,5 +24,13 @@ public class DeviceAccountRequest {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }

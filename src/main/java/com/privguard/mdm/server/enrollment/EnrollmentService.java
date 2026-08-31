@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.privguard.mdm.server.device_accounts.DeviceAccountResponse;
+import com.privguard.mdm.server.device_accounts.*;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.stereotype.Service;
 
 import com.privguard.mdm.server.account.AccountEntity;
 import com.privguard.mdm.server.account.AccountsRepository;
 import com.privguard.mdm.server.account.AccountsService;
-import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
-import com.privguard.mdm.server.device_accounts.DeviceAccountRequest;
-import com.privguard.mdm.server.device_accounts.DeviceAccountsService;
 import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.operations.OperationStatus;
 import com.privguard.mdm.server.tokens.TokenEntity;
@@ -32,6 +29,7 @@ public class EnrollmentService {
 
     private DeviceAccountsService deviceAccountsService;
     private AccountsService accountsService;
+    private DeviceAccountsRepository deviceAccountsRepository;
 
     public EnrollmentService(
         EnrollmentRepository _repository, 
@@ -39,7 +37,8 @@ public class EnrollmentService {
         DeviceAccountsService _agentsService,
         AccountsRepository accountsRepository,
         AccountsService _accountsService,
-        DeviceAccountsService _deviceAccountsService
+        DeviceAccountsService _deviceAccountsService,
+        DeviceAccountsRepository deviceAccountsRepository
     ) {
 
         this.mRepository = _repository;
@@ -49,6 +48,7 @@ public class EnrollmentService {
         
         this.accountsService = _accountsService;
         this.deviceAccountsService = _deviceAccountsService;
+        this.deviceAccountsRepository = deviceAccountsRepository;
     }
 
     public GetEnrollmentsGLPIResponse getAllEnrollments(AuthenticatedAccount _account) {
@@ -123,7 +123,8 @@ public class EnrollmentService {
         try {
 
             String agentSecret = StringsGenerator.generateRandomString(60);
-            TokenEntity dbToken = tokensRepository.findById(_request.getId()).orElseThrow();
+            TokenEntity dbToken = tokensRepository.findById(_request.getId()).orElseThrow(
+                    () -> new RuntimeException("Token was not found ...."));
             
             if(dbToken == null)
                 throw new Exception("token not found");
@@ -137,14 +138,14 @@ public class EnrollmentService {
             if(dbToken.getExpireDate().isBefore(LocalDateTime.now()))
                 throw new Exception("token has expired");
 
-            dbToken.setStatus(TokenStatus.REVOKED);
-            tokensRepository.save(dbToken);
-
             DeviceAccountRequest deviceRequest = new DeviceAccountRequest();
             deviceRequest.setImei(_request.getEmei());
             deviceRequest.setSecret(agentSecret);
+            deviceRequest.setHostname(_request.getHostname());
 
-            DeviceAccountEntity deviceAccount = deviceAccountsService.getByImei(accountsService.addDeviceAccount(deviceRequest).getImei());
+            DeviceAccountResponse deviceAccountResponse = accountsService.addDeviceAccount(deviceRequest);
+            DeviceAccountEntity deviceAccount = deviceAccountsRepository.findByAccount_Uuid(deviceAccountResponse.getAccountUuid()).orElseThrow(
+                    () -> new RuntimeException("device account not created...."));
 
             EnrollmentEntity enrollment = new EnrollmentEntity();
             enrollment.setStartEnrollDate(LocalDateTime.now());
@@ -154,6 +155,10 @@ public class EnrollmentService {
 
             response.setAgentSecret(agentSecret);
             response.setAgentUuid(deviceAccount.getAccount().getUuid());
+
+            dbToken.setStatus(TokenStatus.REVOKED);
+            tokensRepository.save(dbToken);
+
             response.setStatus(OperationStatus.SUCCESS);
             response.setMessage("Enrollment Token Has Benn Validated!");
         }

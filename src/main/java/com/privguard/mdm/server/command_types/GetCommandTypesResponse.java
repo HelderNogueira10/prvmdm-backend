@@ -6,13 +6,13 @@ import java.util.List;
 
 public class GetCommandTypesResponse extends OperationResponse {
 
-    private List<String> types;
+    private List<GetCommandTypeResponse> commandTypes;
 
-    public List<String> getTypes() {
-        return types;
+    public List<GetCommandTypeResponse> getCommandTypes() {
+        return commandTypes;
     }
 
-    public void setTypes(List<String> types) {
-        this.types = types;
+    public void setCommandTypes(List<GetCommandTypeResponse> commandTypes) {
+        this.commandTypes = commandTypes;
     }
 }

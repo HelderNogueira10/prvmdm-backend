@@ -9,13 +9,13 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "command_types")
 public class CommandTypeEntity extends BaseEntity {
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     @NotNull private String type;
+    @NotNull private Long timeout;
+
+    public String getType() { return type; }
+    public Long getTimeout() { return timeout; }
+
+    public void setType(String _type) { this.type = _type; }
+    public void setTimeout(Long _timeout) { this.timeout = _timeout; }
+
 }

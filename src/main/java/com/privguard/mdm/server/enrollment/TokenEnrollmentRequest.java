@@ -5,6 +5,7 @@ public class TokenEnrollmentRequest {
     private String enrollmentToken;
     private String emei;
     private Long id;
+    private String hostname;
 
     public String getEnrollmentToken() {
         return enrollmentToken;
@@ -29,5 +30,13 @@ public class TokenEnrollmentRequest {
 
     public void setEmei(String emei) {
         this.emei = emei;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }

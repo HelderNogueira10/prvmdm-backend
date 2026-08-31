@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 
 public class CommandRequest {
 
-    @NotNull private String deviceAccountUuid;
-    @NotNull @Enumerated(EnumType.STRING) private CommandType type;
+    @NotNull private Long deviceAccountId;
+    @NotNull private Long type;
     private String payload;
 
-    public CommandType getType() { return type; }
+    public Long getType() { return type; }
     public String getPayload() { return payload; }
-    public String getDeviceAccountUuid() { return deviceAccountUuid; }
+    public Long getDeviceAccountId() { return deviceAccountId; }
 }

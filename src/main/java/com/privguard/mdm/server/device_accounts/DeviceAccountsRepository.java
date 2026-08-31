@@ -16,9 +16,12 @@ public interface DeviceAccountsRepository extends JpaRepository<DeviceAccountEnt
     Optional<DeviceAccountEntity> findByImei(String _imei);
     <Optional> DeviceAccountEntity findByAccount(AccountEntity _account);
     Optional<DeviceAccountEntity> findByAccount_Uuid(String uuid);
+    Optional<DeviceAccountEntity> findByAccount_Id(Long id);
 
     List<DeviceAccountEntity> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query("SELECT d.hostname FROM DeviceAccountEntity d")
     List<String> findAllHostnames();
+
+    boolean existsByHostname(String _hostname);
 }

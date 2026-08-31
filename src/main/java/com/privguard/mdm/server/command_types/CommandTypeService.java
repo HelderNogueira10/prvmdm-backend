@@ -26,11 +26,16 @@ public class CommandTypeService {
         try {
 
             //checlk perms //TODO: check permissions
-            List<String> typesList = new ArrayList<>();
-            for (CommandTypeEntity type : mRepository.findAll())
-                typesList.add(type.getType());
+            response.setCommandTypes(new ArrayList<>());
 
-            response.setTypes(typesList);
+            for (CommandTypeEntity type : mRepository.findAll()) {
+
+                GetCommandTypeResponse res = new GetCommandTypeResponse();
+                res.setCommandId(type.getId());
+                res.setCommandType(type.getType());
+                response.getCommandTypes().add(res);
+            }
+
             response.setStatus(OperationStatus.SUCCESS);
             response.setMessage("OK");
         }

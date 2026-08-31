@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GetHostnamesResponse extends OperationResponse {
 
-    private List<String> uuids;
+    private List<Long> ids;
     private List<String> hostnames;
 
     public List<String> getHostnames() {
@@ -17,11 +17,10 @@ public class GetHostnamesResponse extends OperationResponse {
         this.hostnames = hostnames;
     }
 
-    public List<String> getUuids() {
-        return uuids;
+    public List<Long> getIds() {
+        return ids;
     }
-
-    public void setUuids(List<String> uuids) {
-        this.uuids = uuids;
+    public void setIds(List<Long> ids) {
+        this.ids = ids;
     }
 }

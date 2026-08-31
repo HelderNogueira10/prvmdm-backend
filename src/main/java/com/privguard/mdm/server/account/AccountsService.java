@@ -33,7 +33,7 @@ public class AccountsService {
 
     public DeviceAccountResponse addDeviceAccount(DeviceAccountRequest _req) {
 
-        AccountEntity account = createBaseAccount(AccountTypes.ANDROID_ACCOUNT, AccountStatus.PENDING);
+        AccountEntity account = createBaseAccount(AccountTypes.ANDROID_ACCOUNT, AccountStatus.PENDING, _req.getHostname());
         return deviceAccountsService.add(_req, account);
     }
 
@@ -43,7 +43,7 @@ public class AccountsService {
         if(_account.getType() != AccountTypes.USER_ACCOUNT)
             return null;
 
-        AccountEntity account = createBaseAccount(AccountTypes.SERVICE_ACCOUNT, AccountStatus.ENABLED);
+        AccountEntity account = createBaseAccount(AccountTypes.SERVICE_ACCOUNT, AccountStatus.ENABLED, _req.getName());
         return serviceAccountService.add(_req, account);
     }
 
@@ -52,15 +52,16 @@ public class AccountsService {
         if(_account.getType() != AccountTypes.USER_ACCOUNT && _account.getType() != AccountTypes.SERVICE_ACCOUNT)
             return null;
 
-        AccountEntity account = createBaseAccount(AccountTypes.USER_ACCOUNT, AccountStatus.ENABLED);
+        AccountEntity account = createBaseAccount(AccountTypes.USER_ACCOUNT, AccountStatus.ENABLED, _request.getName());
         return userAccountsService.add(_request, account);
     }
 
-    private AccountEntity createBaseAccount(AccountTypes _accountType, AccountStatus _status) {
+    private AccountEntity createBaseAccount(AccountTypes _accountType, AccountStatus _status, String _name) {
 
         AccountEntity account = new AccountEntity();
         account.setType(_accountType);
         account.setStatus(_status);
+        account.setName(_name);
         account.setUuid(UUID.randomUUID().toString());
         accountsRepository.save(account);
 

@@ -10,6 +10,9 @@ public class ProvisioningExtrasResponse {
     @JsonProperty("tokenId")
     private String tokenId;
 
+    @JsonProperty("hostname")
+    private String hostname;
+
     public String getEnrollmentToken() {
         return enrollmentToken;
     }
@@ -24,5 +27,13 @@ public class ProvisioningExtrasResponse {
 
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }

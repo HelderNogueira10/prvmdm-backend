@@ -7,7 +7,9 @@ public class GetCommandResponse {
     private Long id;
     private String endedAt;
     private String payload;
-    private CommandType type;
+    private Long timeout;
+    private Long type;
+    private String typeName;
     private String createdAt;
     private String targetName;
     private String requesterName;
@@ -37,11 +39,11 @@ public class GetCommandResponse {
         this.payload = payload;
     }
 
-    public CommandType getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(CommandType type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
@@ -75,5 +77,21 @@ public class GetCommandResponse {
 
     public void setStatus(CommandStatus status) {
         this.status = status;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }
