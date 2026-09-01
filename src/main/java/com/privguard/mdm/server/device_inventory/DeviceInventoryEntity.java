@@ -1,4 +1,4 @@
-package com.privguard.mdm.server.inventory;
+package com.privguard.mdm.server.device_inventory;
 
 import com.privguard.mdm.server.base.BaseEntity;
 import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
@@ -10,8 +10,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="inventories")
-public class InventoryEntity extends BaseEntity {
+@Table(name="device_inventories")
+public class DeviceInventoryEntity extends BaseEntity {
     
     private String manufacturer;
     private String androidVersion;
@@ -23,7 +23,8 @@ public class InventoryEntity extends BaseEntity {
     private String internalIP;
     private String externalIP;
     private String kernelVersion;
-    private String macAddress;
+    private String wifiMACAddress;
+    private String bluetoothMACAddress;
     private String model;
     private String productName;
     private String sdkVersion;
@@ -33,25 +34,148 @@ public class InventoryEntity extends BaseEntity {
     private String emei1Number;
     private String sim2Number;
     private String emei2Number;
+    private String activeNetworkTransport;
 
     private Integer batteryPercentage;
-    private Integer cpuCoresCount;
+    private byte cpuCoresCount;
+
+    private short wifiSingnal;
 
     private Long memoryTotal;
+    private Long memoryUsed;
     private Long memoryAvailable;
     private Long storageTotal;
+    private Long storageUsed;
     private Long storageAvailable;
-    private Long temperature;
+    private float temperature;
     private Long uptime;
+    private float cpuUsage;
 
+    private boolean isCharging;
+    private boolean isScreenOn;
     private boolean isEncrypted;
     private boolean isPlayProtected;
     private boolean hasNFC;
     private boolean hasGPS;
     private boolean hasBT;
     private boolean hasAccel;
+    private boolean gpsEnabled;
+    private boolean wifiEnabled;
+    private boolean bluetoothEnabled;
 
     @NotNull @OneToOne @JoinColumn(name="device_id") private DeviceAccountEntity device;
+
+    public String getActiveNetworkTransport() {
+        return activeNetworkTransport;
+    }
+
+    public void setActiveNetworkTransport(String activeNetworkTransport) {
+        this.activeNetworkTransport = activeNetworkTransport;
+    }
+
+    public short getWifiSingnal() {
+        return wifiSingnal;
+    }
+
+    public void setWifiSingnal(short wifiSingnal) {
+        this.wifiSingnal = wifiSingnal;
+    }
+
+    public float getCpuUsage() {
+        return cpuUsage;
+    }
+
+    public void setCpuUsage(float cpuUsage) {
+        this.cpuUsage = cpuUsage;
+    }
+
+    public boolean isCharging() {
+        return isCharging;
+    }
+
+    public void setCharging(boolean charging) {
+        isCharging = charging;
+    }
+
+    public boolean isScreenOn() {
+        return isScreenOn;
+    }
+
+    public void setScreenOn(boolean screenOn) {
+        isScreenOn = screenOn;
+    }
+
+    public String getWifiMACAddress() {
+        return wifiMACAddress;
+    }
+
+    public void setWifiMACAddress(String wifiMACAddress) {
+        this.wifiMACAddress = wifiMACAddress;
+    }
+
+    public String getBluetoothMACAddress() {
+        return bluetoothMACAddress;
+    }
+
+    public void setBluetoothMACAddress(String bluetoothMACAddress) {
+        this.bluetoothMACAddress = bluetoothMACAddress;
+    }
+
+    public Long getMemoryUsed() {
+        return memoryUsed;
+    }
+
+    public void setMemoryUsed(Long memoryUsed) {
+        this.memoryUsed = memoryUsed;
+    }
+
+    public Long getStorageUsed() {
+        return storageUsed;
+    }
+
+    public void setStorageUsed(Long storageUsed) {
+        this.storageUsed = storageUsed;
+    }
+
+    public boolean isEncrypted() {
+        return isEncrypted;
+    }
+
+    public void setEncrypted(boolean encrypted) {
+        isEncrypted = encrypted;
+    }
+
+    public boolean isPlayProtected() {
+        return isPlayProtected;
+    }
+
+    public void setPlayProtected(boolean playProtected) {
+        isPlayProtected = playProtected;
+    }
+
+    public boolean isGpsEnabled() {
+        return gpsEnabled;
+    }
+
+    public void setGpsEnabled(boolean gpsEnabled) {
+        this.gpsEnabled = gpsEnabled;
+    }
+
+    public boolean isWifiEnabled() {
+        return wifiEnabled;
+    }
+
+    public void setWifiEnabled(boolean wifiEnabled) {
+        this.wifiEnabled = wifiEnabled;
+    }
+
+    public boolean isBluetoothEnabled() {
+        return bluetoothEnabled;
+    }
+
+    public void setBluetoothEnabled(boolean bluetoothEnabled) {
+        this.bluetoothEnabled = bluetoothEnabled;
+    }
 
     public String getManufacturer() {
         return manufacturer;
@@ -131,14 +255,6 @@ public class InventoryEntity extends BaseEntity {
 
     public void setKernelVersion(String kernelVersion) {
         this.kernelVersion = kernelVersion;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
     }
 
     public String getModel() {
@@ -221,11 +337,11 @@ public class InventoryEntity extends BaseEntity {
         this.batteryPercentage = batteryPercentage;
     }
 
-    public Integer getCpuCoresCount() {
+    public byte getCpuCoresCount() {
         return cpuCoresCount;
     }
 
-    public void setCpuCoresCount(Integer cpuCoresCount) {
+    public void setCpuCoresCount(byte cpuCoresCount) {
         this.cpuCoresCount = cpuCoresCount;
     }
 
@@ -261,11 +377,11 @@ public class InventoryEntity extends BaseEntity {
         this.storageAvailable = storageAvailable;
     }
 
-    public Long getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(Long temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 

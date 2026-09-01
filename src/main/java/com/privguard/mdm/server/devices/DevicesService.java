@@ -1,27 +1,20 @@
 package com.privguard.mdm.server.devices;
 
-import com.privguard.mdm.server.app_files.AppFileEntity;
-import com.privguard.mdm.server.app_versions.AppVersionEntity;
-import com.privguard.mdm.server.apps.AppEntity;
-import com.privguard.mdm.server.apps.FetchBasicApplicationResponse;
 import com.privguard.mdm.server.command.CommandStatus;
 import com.privguard.mdm.server.command.CommandsRepository;
 import com.privguard.mdm.server.device_accounts.DeviceAccountEntity;
 import com.privguard.mdm.server.device_accounts.DeviceAccountsRepository;
 import com.privguard.mdm.server.device_status.DeviceStatusEntity;
 import com.privguard.mdm.server.device_status.DeviceStatusRepository;
-import com.privguard.mdm.server.inventory.DeviceInventoryRepository;
-import com.privguard.mdm.server.inventory.InventoryEntity;
+import com.privguard.mdm.server.device_inventory.DeviceInventoryRepository;
+import com.privguard.mdm.server.device_inventory.DeviceInventoryEntity;
 import com.privguard.mdm.server.operations.OperationStatus;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class DevicesService {
@@ -89,7 +82,7 @@ public class DevicesService {
                 DeviceStatusEntity deviceStatus = deviceStatusRepository.findByDevice(device).orElseThrow(
                         () -> new RuntimeException("device not found!"));
 
-                InventoryEntity deviceInventory = deviceInventoryRepository.findByDevice(device).orElseThrow(
+                DeviceInventoryEntity deviceInventory = deviceInventoryRepository.findByDevice(device).orElseThrow(
                         () -> new RuntimeException("device inventory not found..."));
 
                 FetchBaseDeviceResponse deviceResponse = new FetchBaseDeviceResponse();

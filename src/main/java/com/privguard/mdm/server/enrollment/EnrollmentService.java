@@ -99,6 +99,7 @@ public class EnrollmentService {
         try {
 
             //Update Enrollment Process
+            //TODO: after enrollment add device inventory entry...
             EnrollmentEntity enrollment = mRepository.findByDeviceId(_request.getDeviceId());
             enrollment.setEndEnrollDate(LocalDateTime.now());
             enrollment.setStatus(_request.getStatus());

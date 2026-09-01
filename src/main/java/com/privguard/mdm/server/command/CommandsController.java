@@ -1,6 +1,7 @@
 package com.privguard.mdm.server.command;
 
 import com.privguard.mdm.server.command_types.GetCommandTypesResponse;
+import com.privguard.mdm.server.global.Constants;
 import com.privguard.mdm.server.operations.OperationResponse;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import jakarta.validation.Valid;
@@ -8,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/commands")
+@RequestMapping(Constants.API_PREFIX + "/commands")
 public class CommandsController {
     
     private CommandsService mService;
@@ -21,15 +22,7 @@ public class CommandsController {
     @PostMapping("/add")
     public OperationResponse addCommand(@Valid @RequestBody CommandRequest _request, Authentication _auth) {
 
-        AuthenticatedAccount authedAccount = (AuthenticatedAccount) _auth.getPrincipal();
-        return mService.addCommand(_request, authedAccount);
-    }
-
-    @PostMapping("/update")
-    public OperationResponse updateCommand(@Valid @RequestBody CommandUpdateRequest _request, Authentication _auth) {
-
-        AuthenticatedAccount authAccount = (AuthenticatedAccount) _auth.getPrincipal();
-        return mService.updateCommand(_request, authAccount);
+        return mService.addCommand(_request, (AuthenticatedAccount) _auth.getPrincipal());
     }
 
     @GetMapping("/paged")
@@ -38,5 +31,9 @@ public class CommandsController {
         return mService.getPagedCommands(page, limit, (AuthenticatedAccount) _auth.getPrincipal());
     }
 
+    @PatchMapping("/update")
+    public OperationResponse updateCommand(@Valid @RequestBody CommandUpdateRequest _request, Authentication _auth) {
 
+        return mService.updateCommand(_request, (AuthenticatedAccount) _auth.getPrincipal());
+    }
 }

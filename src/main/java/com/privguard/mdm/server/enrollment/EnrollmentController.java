@@ -1,5 +1,6 @@
 package com.privguard.mdm.server.enrollment;
 
+import com.privguard.mdm.server.global.Constants;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import com.privguard.mdm.server.operations.OperationResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/enrollment")
+@RequestMapping(Constants.API_PREFIX + "/enrollment")
 public class EnrollmentController {
     
     private EnrollmentService mService;

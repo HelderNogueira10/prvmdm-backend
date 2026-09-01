@@ -1,5 +1,6 @@
 package com.privguard.mdm.server.security;
 
+import com.privguard.mdm.server.global.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,8 +45,7 @@ public class SecurityConfig {
                 "/api/auth/api_account",
                 "/api/apps/files/get/**",
                 "/api/users/create",
-                "/api/commands/add",
-                "/api/enrollment/validateToken"
+                "/api/commands/add", Constants.API_PREFIX + "/enrollment/validateToken"
             ).permitAll()
             .anyRequest().authenticated()
         ).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
