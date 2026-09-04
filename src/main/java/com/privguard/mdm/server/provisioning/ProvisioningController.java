@@ -1,5 +1,6 @@
 package com.privguard.mdm.server.provisioning;
 
+import com.privguard.mdm.server.global.Constants;
 import com.privguard.mdm.server.security.AuthenticatedAccount;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import com.privguard.mdm.server.operations.OperationResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/provisioning")
+@RequestMapping(Constants.API_PREFIX + "/provisioning")
 public class ProvisioningController {
     
     private final ProvisioningService provisioningService;

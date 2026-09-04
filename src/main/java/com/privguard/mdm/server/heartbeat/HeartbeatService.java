@@ -53,28 +53,9 @@ public class HeartbeatService {
             DeviceAccountEntity deviceAccount = deviceAccountsRepository.findByAccount_Uuid(_authedAccount.getUuid())
                 .orElseThrow(() -> new RuntimeException("invalid request"));
 
-            //update device status
-            DeviceStatusEntity deviceStatus = deviceStatusRepository.findByDevice(deviceAccount).orElse(new DeviceStatusEntity());
-            deviceStatus.setDevice(deviceAccount);
-            deviceStatus.setBatteryLevel(_req.getDeviceStatus().getBatteryLevel());
-            deviceStatus.setCharging(_req.getDeviceStatus().isCharging());
-            deviceStatus.setCpuUsage(_req.getDeviceStatus().getCpuUsage());
-            deviceStatus.setBatteryTemperature(_req.getDeviceStatus().getBatteryTemperature());
-            deviceStatus.setLastExternalIP(_req.getDeviceStatus().getLastExternalIP());
-            deviceStatus.setLastInternalIP(_req.getDeviceStatus().getLastInternalIP());
-            deviceStatus.setMemoryUsed(_req.getDeviceStatus().getMemoryUsed());
-            deviceStatus.setStorageUsed(_req.getDeviceStatus().getStorageUsed());
-            deviceStatus.setNetworktType(_req.getDeviceStatus().getNetworkType());
-            deviceStatus.setScreenOn(_req.getDeviceStatus().isScreenOn());
-            deviceStatus.setUptime(_req.getDeviceStatus().getUptime());
-            deviceStatus.setWifiSignal(_req.getDeviceStatus().getWifiSignal());
-            deviceStatusRepository.save(deviceStatus);
-
-            //update last seen
             deviceAccount.setLastSeen(LocalDateTime.now());
             deviceAccountsRepository.save(deviceAccount);
 
-            //TUDO: Fetch cmmands by device id and status eing pending
             response.setTimestamp(LocalDateTime.now().toString());
             response.setPendingCommands(commandsService.getPendingCommands(deviceAccount));
             response.setStatus(OperationStatus.SUCCESS);
