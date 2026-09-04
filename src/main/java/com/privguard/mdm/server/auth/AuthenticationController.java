@@ -1,5 +1,6 @@
 package com.privguard.mdm.server.auth;
 
+import com.privguard.mdm.server.global.Constants;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(Constants.API_PREFIX + "/auth")
 public class AuthenticationController {
     
     private final AuthenticationService mService;
